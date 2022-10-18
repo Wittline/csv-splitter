@@ -28,8 +28,9 @@ def split_csv(sfp, dest, prefix, size_chunk):
                     except:
                         exist = False
                         break
+                return
             if i == 0:
                 os.remove(t_filepath)
             fn += 1
   
-split_csv('Iowa_Liquor_Sales.csv', 'chunks/', 'Iowa_Liquor_Sales_', 10)
+split_csv('Iowa_Liquor_Sales.csv', 'chunks/', 'Iowa_Liquor_Sales_', 1000)
