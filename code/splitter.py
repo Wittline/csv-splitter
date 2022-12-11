@@ -43,7 +43,7 @@ class CSVSplit:
             t_filepath = os.path.join(self.folder, t_filename)
 
             if compress:
-                chunk_bytes = gzip.compress(''.join(chunk).encode()[1:])
+                chunk_bytes = gzip.compress(''.join(chunk).encode()[6:])
                 with open(t_filepath, 'wb') as chunk_file:
                     chunk_file.write(chunk_bytes)
             else:
