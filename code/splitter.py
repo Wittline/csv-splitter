@@ -10,7 +10,7 @@ class CSVSplit:
         self.prefix = prefix
         self.folder = folder
 
-    def split_process(self, filepath, chunk_size = 10):
+    def __split_process(self, filepath, chunk_size = 10):
         chunk = []
         with open(filepath) as f:
 
@@ -32,25 +32,33 @@ class CSVSplit:
     
     def split(self, chunk_size = 10, compress = False):
 
-        chunk_file = 0              
-        for chunk in self.split_process(self.filepath, chunk_size):
+        chunk_number = 0              
+        for chunk in self.__split_process(self.filepath, chunk_size):
 
             format = 'csv'
 
             if compress:
                 format = 'csv.gz'
 
-            t_filename = f'{self.prefix}_{chunk_file}.{format}'
+            t_filename = f'{self.prefix}_{chunk_number}.{format}'
             t_filepath = os.path.join(self.folder, t_filename)
 
             if compress:
-                chunk_bytes = gzip.compress('\n'.join(chunk))
+                chunk_bytes = gzip.compress(''.join(chunk).encode())
                 with open(t_filepath, 'wb') as chunk_file:
                     chunk_file.write(chunk_bytes)
             else:
                 with open(t_filepath, 'w') as file:
                     file.writelines(chunk)
 
-            chunk_file += 1
+            chunk_number += 1
+
+
+csvspl = CSVSplit('csvData.csv', 'data', 'chunks/', header = True)
+
+csvspl.split(100, compress = False)
+
+
+
 
 
