@@ -1,5 +1,4 @@
 import os
-import sys
 import gzip
 
 class CSVSplit:
@@ -44,7 +43,7 @@ class CSVSplit:
             t_filepath = os.path.join(self.folder, t_filename)
 
             if compress:
-                chunk_bytes = gzip.compress(''.join(chunk).encode())
+                chunk_bytes = gzip.compress(''.join(chunk).encode()[1:])
                 with open(t_filepath, 'wb') as chunk_file:
                     chunk_file.write(chunk_bytes)
             else:
@@ -56,7 +55,7 @@ class CSVSplit:
 
 csvspl = CSVSplit('csvData.csv', 'data', 'chunks/', header = True)
 
-csvspl.split(100, compress = False)
+csvspl.split(100, compress = True)
 
 
 
