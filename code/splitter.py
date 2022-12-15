@@ -29,7 +29,7 @@ class CSVSplit:
         if chunk:
             yield chunk
     
-    def split(self, chunk_size = 10, compress = False):
+    def split_chunks_size_n(self, chunk_size = 10, compress = False):
 
         chunk_number = 0              
         for chunk in self.__split_process(self.filepath, chunk_size):
@@ -54,7 +54,7 @@ class CSVSplit:
 
 
 csvspl = CSVSplit('csvData.csv', 'data', 'chunks/', header = True)
-csvspl.split(100, compress = True)
+csvspl.split_chunks_size_n(100, compress = True)
 
 
 
