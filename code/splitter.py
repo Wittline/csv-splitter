@@ -27,7 +27,7 @@ class CSVSplit:
                     else:
                         chunk = []
         if chunk:
-            yield chunk 
+            yield chunk
     
     def split(self, chunk_size = 10, compress = False):
 
@@ -54,7 +54,6 @@ class CSVSplit:
 
 
 csvspl = CSVSplit('csvData.csv', 'data', 'chunks/', header = True)
-
 csvspl.split(100, compress = True)
 
 
