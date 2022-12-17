@@ -135,41 +135,6 @@ class CSVSplit:
             chunk_number += 1
 
 
-    def __split__columns_process(self, filepath, column_name, chunk_size = 10):
-        
-        partitions = {}
-        row_number = 0        
-
-        with open(filepath) as f:
-
-            if self.header:
-                header = next(f)
-                _header =  header.strip().split(self.sep)
-
-            index_column = _header.index(column_name)
-            del _header[index_column]
-            _header = self.sep.join(_header) + '\n'
-
-            for line in f:
-                row = line.strip().split(self.sep)
-                value = row[index_column]
-                del row[index_column]
-                if value not in partitions:
-                    if self.header:
-                        partitions[value] = [_header]
-                    else:
-                        partitions[value] = []
-
-                partitions[value].append(self.sep.join(row) + '\n')
-                row_number += 1
-                
-                if row_number == chunk_size:
-                    yield partitions
-                    row_number = 0
-                    partitions = {}                 
-
-        if row_number > 0:
-            yield partitions
 
     def split_by_column(self, column_value, batches = 10):
 
@@ -193,15 +158,14 @@ class CSVSplit:
                     else:
                         rows = chunk[value][1:]
                                 
-                    def write_rows(file, name, rows):
-                        try:
-                            print("writing", len(rows),  "rows in", name)
+                    def write_rows(file, rows):
+                        try:                            
                             file.writelines(rows)
                             file.flush()
                         except Exception as er:
                             print(er)
                     
-                    tasks.append(executor.submit(write_rows, files[t_filepath], t_filepath, rows))
+                    tasks.append(executor.submit(write_rows, files[t_filepath], rows))
                 
                 concurrent.futures.wait(tasks)
         
